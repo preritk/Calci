@@ -30,9 +30,20 @@ class App extends React.Component {
     });
   }
 
+  validate() {
+    switch (this.state.resultText.slice(-1)) {
+      case "+":
+      case "-":
+      case "*":
+      case "/":
+        return false;
+    }
+    return true;
+  }
+
   buttonPressed(Text) {
     if (Text === "=") {
-      return this.calculateResult();
+      return this.validate() && this.calculateResult();
     }
     this.setState({
       resultText: this.state.resultText + Text
@@ -71,6 +82,7 @@ class App extends React.Component {
       for (let j = 0; j < 3; j++) {
         row.push(
           <TouchableOpacity
+            key={nums[i][j]}
             onPress={() => this.buttonPressed(nums[i][j])}
             style={styles.btn}
           >
@@ -78,13 +90,17 @@ class App extends React.Component {
           </TouchableOpacity>
         );
       }
-      rows.push(<View style={styles.row}>{row}</View>);
+      rows.push(
+        <View key={i} style={styles.row}>
+          {row}
+        </View>
+      );
     }
     let ops = ["DEL", "+", "-", "*", "/"];
     let oparr = [];
     for (let i = 0; i < 5; i++) {
       oparr.push(
-        <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity key={this.operations[i]} style={styles.btn}>
           <Text
             onPress={() => this.operation(ops[i])}
             style={[styles.btnText, styles.white]}
@@ -121,24 +137,24 @@ const styles = StyleSheet.create({
   },
   result: {
     flex: 2,
-    backgroundColor: "red",
+    backgroundColor: "white",
     height: height * 0.25,
     width: width
   },
   resultText: {
     fontSize: 60,
-    color: "white",
+    color: "black",
     textAlign: "right",
     padding: 20
   },
   calculation: {
     flex: 1,
-    backgroundColor: "green",
+    backgroundColor: "white",
     height: height * 0.15
   },
   calculationText: {
     fontSize: 40,
-    color: "white",
+    color: "black",
     textAlign: "right"
   },
   white: {
@@ -156,11 +172,12 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   btnText: {
-    fontSize: 30
+    fontSize: 30,
+    color: "white"
   },
   numbers: {
     flex: 3,
-    backgroundColor: "yellow",
+    backgroundColor: "#434343",
     width: width * 0.9
   },
   row: {
@@ -171,7 +188,7 @@ const styles = StyleSheet.create({
   },
   operations: {
     flex: 1,
-    backgroundColor: "black",
+    backgroundColor: "#636363",
     width: width * 0.1,
     justifyContent: "space-around"
   }
