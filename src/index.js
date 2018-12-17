@@ -17,6 +17,7 @@ class App extends React.Component {
     this.state = {
       resultText: ""
     };
+    this.operations = ["DEL", "+", "-", "*", "/"];
     this.buttonPressed = this.buttonPressed.bind(this);
   }
 
@@ -25,7 +26,7 @@ class App extends React.Component {
   }
 
   buttonPressed(Text) {
-    if (Text == "=") {
+    if (Text === "=") {
       return this.calculateResult();
     }
     this.setState({
@@ -35,19 +36,26 @@ class App extends React.Component {
 
   operation(ops) {
     switch (ops) {
-      case "DEL": {
+      case "DEL":
         let text = this.state.resultText.split("");
         text.pop();
         this.setState({
           resultText: text.join("")
         });
         break;
-      }
       case "+":
       case "-":
       case "*":
       case "/":
-      //if(text==)
+        const lastChar = this.state.resultText.split('').pop()
+        if(this.operations.indexOf(lastChar)>0)
+        return 
+        if (this.state.resultText === "") return;
+        else {
+          this.setState({
+            resultText: this.state.resultText + ops
+          });
+        }
     }
   }
   render() {
