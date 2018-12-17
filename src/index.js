@@ -15,14 +15,19 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      resultText: ""
+      resultText: "",
+      calculationText: ""
     };
     this.operations = ["DEL", "+", "-", "*", "/"];
     this.buttonPressed = this.buttonPressed.bind(this);
+    this.calculateResult = this.calculateResult.bind(this);
   }
 
   calculateResult() {
     const text = this.state.resultText;
+    this.setState({
+      calculationText: eval(text)
+    });
   }
 
   buttonPressed(Text) {
@@ -47,9 +52,8 @@ class App extends React.Component {
       case "-":
       case "*":
       case "/":
-        const lastChar = this.state.resultText.split('').pop()
-        if(this.operations.indexOf(lastChar)>0)
-        return 
+        const lastChar = this.state.resultText.split("").pop();
+        if (this.operations.indexOf(lastChar) > 0) return;
         if (this.state.resultText === "") return;
         else {
           this.setState({
@@ -96,7 +100,9 @@ class App extends React.Component {
           <Text style={styles.resultText}>{this.state.resultText}</Text>
         </View>
         <View style={styles.calculation}>
-          <Text style={styles.calculationText}>11*11</Text>
+          <Text style={styles.calculationText}>
+            {this.state.calculationText}
+          </Text>
         </View>
         <View style={styles.buttons}>
           <View style={styles.numbers}>{rows}</View>
